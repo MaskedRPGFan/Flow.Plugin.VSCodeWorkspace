@@ -128,7 +128,7 @@ namespace Flow.Plugin.VSCodeWorkspaces.WorkspacesHelper
                                 var labelString = label.GetString()!;
                                 var matchGroup = workspaceLabelParser.Match(labelString);
                                 workspace = workspace with {
-                                    Lable = $"{matchGroup.Groups[2]} {matchGroup.Groups[1]}"
+                                    Label = $"{matchGroup.Groups[2]} {matchGroup.Groups[1]}"
                                 };
                             }
 

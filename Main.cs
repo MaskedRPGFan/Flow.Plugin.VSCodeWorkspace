@@ -2,6 +2,8 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.IO;
+
 namespace Flow.Plugin.VSCodeWorkspaces
 {
     using Flow.Launcher.Plugin;
@@ -124,18 +126,22 @@ namespace Flow.Plugin.VSCodeWorkspaces
 
         private Result CreateWorkspaceResult(VSCodeWorkspace ws)
         {
+            var instanceLabel = Path.GetDirectoryName(Path.GetDirectoryName(ws.VSCodeInstance.ExecutablePath));
             var title = $"{ws.FolderName}";
             var typeWorkspace = ws.WorkspaceTypeToString();
 
             if (ws.TypeWorkspace != TypeWorkspace.Local)
             {
-                title = ws.Lable != null
-                    ? $"{ws.Lable}"
+                title = ws.Label != null
+                    ? $"{ws.Label}"
                     : $"{title}{(ws.ExtraInfo != null ? $" - {ws.ExtraInfo}" : string.Empty)} ({typeWorkspace})";
             }
 
             var tooltip =
                 $"{Resources.Workspace}{(ws.TypeWorkspace != TypeWorkspace.Local ? $" {Resources.In} {typeWorkspace}" : string.Empty)}: {SystemPath.RealPath(ws.RelativePath)}";
+
+            if (ws.TypeWorkspace == TypeWorkspace.Local)
+                tooltip = $"{tooltip}   |   {Resources.TypeWorkspaceLocal}: {instanceLabel}";
 
             return new Result
             {
